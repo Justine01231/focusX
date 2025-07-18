@@ -142,6 +142,101 @@ pomo_options=(
   sudo pacman -S speech-dispatcher
   ```
 
+  Great! Now that you've:
+
+* ✅ Renamed `focusX.sh` to `focusx`
+* ✅ Pulled changes with `git pull --rebase`
+* ✅ Pushed successfully
+
+Let’s move to the **next step: adding the Windows installer** (`install.ps1`).
+
+---
+
+## 🛠️ Step-by-Step: Add `install.ps1` to Your Repo
+
+### ✅ Step 1: Create the installer script
+
+From inside your `~/focusX` repo, create the file:
+
+```bash
+nano install.ps1
+```
+
+### ✅ Step 2: Paste this code into `install.ps1`:
+
+```powershell
+# install.ps1 - Installs focusX for Git Bash users on Windows
+
+Write-Host "🍅 Installing focusX..."
+
+# Paths
+$home = $env:USERPROFILE
+$targetDir = "$home\focusX"
+$bashrc = "$home\.bashrc"
+
+# Create focusX directory if not exists
+if (-Not (Test-Path $targetDir)) {
+    New-Item -ItemType Directory -Force -Path $targetDir | Out-Null
+}
+
+# Download and copy the focusx script
+$repoRawURL = "https://raw.githubusercontent.com/Justine01231/focusX/main/focusx"
+$scriptDest = "$targetDir\focusx"
+
+Invoke-WebRequest $repoRawURL -OutFile $scriptDest
+Write-Host "✅ Script downloaded to $scriptDest"
+
+# Append to .bashrc if not already sourced
+$sourceLine = "source ~/focusX/focusx"
+if (!(Test-Path $bashrc)) {
+    New-Item -ItemType File -Path $bashrc | Out-Null
+}
+
+if (-not (Get-Content $bashrc | Select-String -Pattern [regex]::Escape($sourceLine))) {
+    Add-Content $bashrc "`n$sourceLine"
+    Write-Host "✅ Added source line to .bashrc"
+} else {
+    Write-Host "ℹ️ Source line already exists in .bashrc"
+}
+
+Write-Host ""
+Write-Host "🎉 Done! Open Git Bash and run 'wo', 'br', or 'focusX'"
+Write-Host "💡 If it's not working yet, run: source ~/.bashrc"
+```
+
+---
+
+### ✅ Step 3: Save and push
+
+In the terminal:
+
+```bash
+git add install.ps1
+git commit -m "Add install.ps1 for Git Bash Windows installation"
+git push
+```
+
+---
+
+### 🪟 Windows Installation (Git Bash)
+
+1. ✅ Install [Go](https://go.dev/dl/)
+2. ✅ Install [Git for Windows](https://git-scm.com/downloads)
+3. ✅ Run this PowerShell command:
+
+```powershell
+irm https://raw.githubusercontent.com/Justine01231/focusX/main/install.ps1 | powershell
+```
+
+4. ✅ Open **Git Bash** and run:
+
+```bash
+wo
+```
+
+---
+
+
 ## 🎨 Screenshots
 
 ### Work Session
