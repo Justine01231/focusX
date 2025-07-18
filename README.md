@@ -41,7 +41,7 @@ A beautiful, feature-rich Pomodoro Timer for the terminal, optimized for Arch Li
 
 2. **Clone and source the script:**
    ```bash
-   git clone https://github.com/yourusername/focusX.git
+   git clone https://github.com/Justine01231/focusX.git
    cd focusX
    chmod +x focusX.sh
    source focusX.sh
