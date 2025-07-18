@@ -150,7 +150,7 @@ pomo_options=(
 3. ✅ Run this PowerShell command:
 
 ```powershell
-irm https://raw.githubusercontent.com/Justine01231/focusX/main/install.ps1 | powershell
+irm https://raw.githubusercontent.com/Justine01231/focusX/main/install.ps1 | iex
 ```
 
 4. ✅ Open **Git Bash** and run:
