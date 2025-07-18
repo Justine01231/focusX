@@ -49,11 +49,11 @@ A beautiful, feature-rich Pomodoro Timer for the terminal, optimized for Arch Li
 
 3. **Add to your shell profile for persistent access:**
    ```bash
-   echo "source $(pwd)/focusX.sh" >> ~/.bashrc
+   echo 'source ~/focusX/focusX.sh' >> ~/.bashrc
    source ~/.bashrc
    
    # For zsh users:
-   echo "source $(pwd)/focusX.sh" >> ~/.zshrc
+   echo 'source ~/focusX/focusX.sh' >> ~/.zshrc
    source ~/.zshrc
    ```
 
