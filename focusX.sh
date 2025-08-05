@@ -7,7 +7,7 @@
 # Configuration - Edit these times as needed
 declare -A pomo_options
 pomo_options=(
-    ["work"]=45
+    ["work"]=60
     ["break"]=10
     ["longbreak"]=30
 )
@@ -27,9 +27,9 @@ show_banner() {
         cat << 'EOF' | lolcat
    ___                    _  __
   / __/___  ____  __  ___| |/ /
- / _// _ \/ __/ / / / __/   /
+ / _// _ \/ __/ / / / __/   / 
 /_/  \___/\__/  \_,_/\__/_/|_|
-
+                              
 🍅 Pomodoro Timer - Stay Focused, Stay Productive
 EOF
     else
@@ -37,9 +37,9 @@ EOF
         cat << 'EOF'
    ___                    _  __
   / __/___  ____  __  ___| |/ /
- / _// _ \/ __/ / / / __/   /
+ / _// _ \/ __/ / / / __/   / 
 /_/  \___/\__/  \_,_/\__/_/|_|
-
+                              
 EOF
         echo -e "${CYAN}🍅 Pomodoro Timer - Stay Focused, Stay Productive${NC}"
     fi
@@ -49,11 +49,11 @@ EOF
 # Check if required dependencies are available
 check_dependencies() {
     local missing_deps=()
-
+    
     if ! command -v timer &> /dev/null; then
         missing_deps+=("timer")
     fi
-
+    
     if [[ ${#missing_deps[@]} -ne 0 ]]; then
         echo -e "${RED}❌ Missing dependencies: ${missing_deps[*]}${NC}"
         echo -e "${YELLOW}💡 Install timer with: go install github.com/caarlos0/timer@latest${NC}"
@@ -67,49 +67,49 @@ check_dependencies() {
 display_session() {
     local session_type="$1"
     local duration="$2"
-
+    
     # Clear screen for better focus
     clear
-
+    
     local message="🍅 Starting ${session_type} session (${duration} minutes)"
-
+    
     # Try lolcat first, fallback to colored echo
     if command -v lolcat &> /dev/null; then
         echo "$message" | lolcat
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | lolcat
     else
         case "$session_type" in
-            "work")
+            "work") 
                 echo -e "${GREEN}$message${NC}"
                 echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
                 ;;
-            "break")
+            "break") 
                 echo -e "${BLUE}$message${NC}"
                 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
                 ;;
-            "longbreak")
+            "longbreak") 
                 echo -e "${YELLOW}$message${NC}"
                 echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
                 ;;
         esac
     fi
-
+    
     # Show motivational message
     case "$session_type" in
-        "work")
+        "work") 
             echo -e "${GREEN}💪 Focus time! Deep work mode activated!${NC}"
             echo -e "${GREEN}🎯 Eliminate distractions and get in the zone${NC}"
             ;;
-        "break")
+        "break") 
             echo -e "${BLUE}☕ Time to relax and recharge!${NC}"
             echo -e "${BLUE}🧘 Step away from the screen, stretch, hydrate${NC}"
             ;;
-        "longbreak")
+        "longbreak") 
             echo -e "${YELLOW}🌟 Extended break time - you've earned it!${NC}"
             echo -e "${YELLOW}🚶 Take a walk, grab a snack, clear your mind${NC}"
             ;;
     esac
-
+    
     echo ""
 }
 
@@ -117,15 +117,15 @@ display_session() {
 notify_completion() {
     local session_type="$1"
     local message="$session_type session completed!"
-
+    
     # Clear screen and show completion
     clear
     echo ""
-
+    
     # Animated completion message
     if command -v lolcat &> /dev/null; then
         echo "🎉 ================================== 🎉" | lolcat
-        echo "     $message" | lolcat
+        echo "     $message" | lolcat  
         echo "🎉 ================================== 🎉" | lolcat
     else
         case "$session_type" in
@@ -137,42 +137,42 @@ notify_completion() {
         echo -e "${color}     $message${NC}"
         echo -e "${color}🎉 ================================== 🎉${NC}"
     fi
-
+    
     echo ""
-
+    
     # Desktop notification (works on most Linux systems)
     if command -v notify-send &> /dev/null; then
         case "$session_type" in
-            "work")
+            "work") 
                 notify-send "🍅 focusX Timer" "Work session complete! Time for a break." -t 5000 -u normal
                 ;;
-            "break")
+            "break") 
                 notify-send "🍅 focusX Timer" "Break complete! Ready to work?" -t 5000 -u normal
                 ;;
-            "longbreak")
+            "longbreak") 
                 notify-send "🍅 focusX Timer" "Long break complete! Feeling refreshed?" -t 5000 -u normal
                 ;;
         esac
     fi
-
+    
     # Text-to-speech (optional, fails silently if not available)
     if command -v spd-say &> /dev/null; then
         spd-say "$message" 2>/dev/null &
     elif command -v say &> /dev/null; then  # macOS
         say "$message" 2>/dev/null &
     fi
-
+    
     # Visual/audio bell
     echo -e "\a"
-
+    
     # Show next action suggestions
     case "$session_type" in
-        "work")
+        "work") 
             echo -e "${BLUE}💡 What's next?${NC}"
             echo -e "${BLUE}   • 'br' for a short break (${pomo_options[break]} min)${NC}"
             echo -e "${BLUE}   • 'lb' for a long break (${pomo_options[longbreak]} min)${NC}"
             ;;
-        "break"|"longbreak")
+        "break"|"longbreak") 
             echo -e "${GREEN}💡 What's next?${NC}"
             echo -e "${GREEN}   • 'wo' to start working (${pomo_options[work]} min)${NC}"
             echo -e "${GREEN}   • 'qwo' for quick start with confirmation${NC}"
@@ -187,7 +187,7 @@ pomodoro() {
     if ! check_dependencies; then
         return 1
     fi
-
+    
     # Show help if no argument provided
     if [[ -z "$1" ]]; then
         echo -e "${CYAN}🍅 focusX Timer Usage:${NC}"
@@ -208,24 +208,24 @@ pomodoro() {
         echo "  wo, br, lb, pstatus, qwo"
         return 1
     fi
-
+    
     # Check if session type exists
     if [[ -z "${pomo_options[$1]}" ]]; then
         echo -e "${RED}❌ Unknown session type: $1${NC}"
         echo -e "${YELLOW}Available options: ${!pomo_options[*]}${NC}"
         return 1
     fi
-
+    
     local session_type="$1"
     local duration=${pomo_options[$session_type]}
-
+    
     # Display session start
     display_session "$session_type" "$duration"
-
+    
     # Show timer info
     local start_time=$(date '+%H:%M:%S')
     local end_time=$(date -d "+${duration} minutes" '+%H:%M:%S' 2>/dev/null || date -v+${duration}M '+%H:%M:%S' 2>/dev/null)
-
+    
     echo -e "${PURPLE}⏱️  Started: $start_time${NC}"
     if [[ -n "$end_time" ]]; then
         echo -e "${PURPLE}⏰ Will end: $end_time${NC}"
@@ -235,7 +235,7 @@ pomodoro() {
     echo -e "${CYAN}💡 Press Ctrl+C to cancel the timer${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo ""
-
+    
     # Start the timer
     if timer ${duration}m; then
         notify_completion "$session_type"
@@ -252,7 +252,7 @@ pomodoro() {
 pomo_status() {
     echo -e "${CYAN}🍅 focusX Timer Configuration${NC}"
     echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-
+    
     for key in "${!pomo_options[@]}"; do
         case "$key" in
             "work") icon="💼" color="$GREEN" ;;
@@ -262,7 +262,7 @@ pomo_status() {
         esac
         echo -e "  $icon ${color}$(printf '%-10s' $key): ${pomo_options[$key]} minutes${NC}"
     done
-
+    
     echo ""
     echo -e "${CYAN}💡 Quick Commands:${NC}"
     echo -e "  ${GREEN}wo${NC}  - Start work session (${pomo_options[work]} min)"
@@ -279,16 +279,16 @@ pomo_status() {
 # Quick session starter with confirmation
 quick_start() {
     local session_type="$1"
-
+    
     if [[ -z "${pomo_options[$session_type]}" ]]; then
         echo -e "${RED}❌ Invalid session type: $session_type${NC}"
         return 1
     fi
-
+    
     echo -e "${YELLOW}🍅 Quick Start: $session_type session (${pomo_options[$session_type]} minutes)${NC}"
     echo -n "Continue? [Y/n] "
     read -r response
-
+    
     if [[ "$response" =~ ^[Yy]$|^$ ]]; then
         pomodoro "$session_type"
     else
@@ -299,7 +299,7 @@ quick_start() {
 # Main focusX function - shows banner and help
 focusX() {
     show_banner
-
+    
     echo -e "${CYAN}🚀 Quick Start Commands:${NC}"
     echo -e "  ${GREEN}wo${NC}  - Work session (${pomo_options[work]} min)"
     echo -e "  ${BLUE}br${NC}  - Break session (${pomo_options[break]} min)"
@@ -314,7 +314,7 @@ focusX() {
 
 # Function aliases for easy access
 alias wo="pomodoro work"
-alias br="pomodoro break"
+alias br="pomodoro break" 
 alias lb="pomodoro longbreak"
 alias pomo="pomodoro"
 alias pstatus="pomo_status"
